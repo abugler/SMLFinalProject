@@ -1,34 +1,30 @@
-Introduction
-====================
+Audio Source Separation with Deep Clustering
+=============================================
 
-A boilerplate for reproducible and transparent computer audition research that leverages
+Overview:
+---------
+
+Our project is focused on tackling the problem of audio source separation. To put it simply:
+
+`given an audio file containing sounds from multiple different voices/instruments/sources, can a computer efficiently classify and separate a sound file into separate sound files of its constituents?`
+
+
+## Introduction
+
+Our repository currently is a boilerplate for reproducible and transparent computer audition research that leverages
 [nussl](https://interactiveaudiolab.github.io/nussl/), a source separation library. This 
 project provides boilerplate code for training neural network models to separate mixtures
 containing multiple speakers, music, and environmental sounds. It is easy to add and
 train new models or datasets (GPU sold separately). The goal of this project is to enable
 further reproducibility within the source separation community.
 
-Usage
------
-To start a new project:
 
-`cookiecutter gh:pseeth/cookiecutter-nussl` 
-
-<!-- **TODO: Make this nussl/cookiecutter*-->
-
-Documentation
--------------
-
-The documentation is [here](https://pseeth.github.io/cookiecutter-nussl/). It includes
-guides for getting started, training models, creating datasets, and API documentation.
-
-Features
-------------
+## Features
 
 The following models can be trained:
 
 - Mask Inference
-- Deep Clustering
+- Deep Clustering (The algorithm we are running to currently separate sounds)
 - Chimera
 - TasNet
 
@@ -39,6 +35,7 @@ on the following datasets:
 - Slakh
 - WSJ0-mix2
 - Wham!
+- RemixPacks600 (Currently in the works)
 
 This project utilizes building block components from `nussl` for input/output 
 (reading/writing audio, STFT/iSTFT, masking, etc.), and for neural network construction
@@ -54,16 +51,57 @@ for doing and sharing research.* This project and `nussl` are both built upon
 the [PyTorch](https://pytorch.org/) machine learning framework, as such, building new
 components is as simple as adding new PyTorch code, though writing python is not required.
 
-Requirements
-------------
+
+## Requirements
+
 - Install `cookiecutter` command line: `pip install cookiecutter` (generates boilerplate 
 code)
+
 - Install [Anaconda or Miniconda](https://www.anaconda.com/distribution/)
+
 - Install [Docker](https://www.docker.com/) and [NVIDIA Docker](https://github.com/NVIDIA/nvidia-docker)
+
 - Install Poetry: https://poetry.eustace.io/docs/#installation (dependency management)
 
-Guiding Principles
------------------
+- In order to efficiently install all packages with dependencies, `make poetry` in a new Conda environment. This will install all of the necessary components in the right order.
+
+## Usage
+
+To start a new project, input into terminal:
+
+`cookiecutter gh:pseeth/cookiecutter-nussl` 
+
+This will then run you through a setup process in which you specify your data, cache, and artifacts folder.
+
+After creating these folders, you can begin running experiments and training models, all of which is specified in the documentation below.
+
+
+## Class Project API
+
+ALTERNATIVE: ANDREAS WE WRITE ABOUT HOW VISUALIZE.py takes in an audio file and separates it given the specified trained deep clustering model (does this part still need the nussl library? OR is a simple visualize.py okay?)
+
+## Documentation
+
+The documentation is [here](https://pseeth.github.io/cookiecutter-nussl/). It includes
+guides for getting started, training models, creating datasets, and API documentation.
+
+
+## Deep Clustering in Depth:
+
+The deep clustring algorithm is a 2-step machine learning paradigm used to separate audio files. On a high level, the training steps are as follows:
+
+1. Audio files are pieced into time-frequency blocks (ex: .2 seconds, 1000-1500 Hz) and labeled as a certain voice/instrument/environmental sound.
+
+2. These "pieces" and their respective labels are fed into a traditional Deep Neural Net, in which the Deep Neural Net embeds the 2-dimensional audio pieces into a 20-dimensional embedding space.
+
+3. Within this embedding space, the K-Means clustering algorithm is run in order to group together audio pieces that are most similar-- or in other words, are closest together in the embedding space.
+
+4. The labels from the resulting K-Means clustering is compared to the ground truth labels, the loss/accuracy is calculated, and the resulting change in weights via gradient descent is backpropogated through the DNN, leading to a more accurate source separating model.
+
+For an in-depth study of the model we used, check out the report: https://arxiv.org/abs/1508.04306
+
+## Guiding Principles
+
 The idea behind this project structure is to make it easy to use `nussl` to set up
 source separation experiments. The functionality here is such that classes are taken
 from `nussl` and can be extended and customized by your package code. For example, to
@@ -93,6 +131,7 @@ of `.yml` files with their associated scripts. This prevents "magic commands" wi
 mysterious and long forgotten command-line arguments that you ran one time 3 months ago 
 from occurring. 
 
-License
--------
+
+## License
+
 This project is licensed under the terms of the [MIT License](/LICENSE)
