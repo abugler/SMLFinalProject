@@ -1,0 +1,6 @@
+jobs:
+  - training_folders: ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_3, ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_20, ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_100, ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_200
+    base_mixture_yml: data_prep/remix_packs/incoherent.yml
+    base_experiment_yml: experiments/dpcl/remix_packs_dpcl.yml
+    num_gpus: 1
+    num_jobs: 1

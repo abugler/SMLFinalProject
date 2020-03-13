@@ -1,0 +1,112 @@
+bitdepth: 16
+coherent: false
+mixture_parameters:
+  test:
+    background_path: null
+    event_parameters:
+      event_duration: !!python/tuple
+      - const
+      - 4
+      event_time: !!python/tuple
+      - const
+      - 0
+      label: !!python/tuple
+      - choose
+      - []
+      pitch_shift: !!python/tuple
+      - uniform
+      - 2
+      - 4
+      snr: !!python/tuple
+      - uniform
+      - -2.5
+      - 2.5
+      source_file: !!python/tuple
+      - choose
+      - []
+      source_time: !!python/tuple
+      - uniform
+      - 0
+      - 1000
+      time_stretch: !!python/tuple
+      - const
+      - 1
+    foreground_path: ${DATA_DIRECTORY}/remixpacks600/scaper/test_16k
+    num_mixtures: 3000
+    num_sources: 4
+    scene_duration: 4
+    target_path: ${DATA_DIRECTORY}/remixpacks600/generated/incoherent/test
+  train:
+    background_path: null
+    event_parameters:
+      event_duration: !!python/tuple
+      - const
+      - 4
+      event_time: !!python/tuple
+      - const
+      - 0
+      label: !!python/tuple
+      - choose
+      - []
+      pitch_shift: !!python/tuple
+      - uniform
+      - -2
+      - 2
+      snr: !!python/tuple
+      - uniform
+      - -2.5
+      - 2.5
+      source_file: !!python/tuple
+      - choose
+      - []
+      source_time: !!python/tuple
+      - uniform
+      - 0
+      - 1000
+      time_stretch: !!python/tuple
+      - const
+      - 1
+    foreground_path: /home/data//remixpacks600/scaper/train_16k_3
+    num_mixtures: 20000
+    num_sources: 4
+    scene_duration: 4
+    target_path: ${DATA_DIRECTORY}/remixpacks600/generated/incoherent/train
+  val:
+    background_path: null
+    event_parameters:
+      event_duration: !!python/tuple
+      - const
+      - 4
+      event_time: !!python/tuple
+      - const
+      - 0
+      label: !!python/tuple
+      - choose
+      - []
+      pitch_shift: !!python/tuple
+      - uniform
+      - -2
+      - 2
+      snr: !!python/tuple
+      - uniform
+      - -2.5
+      - 2.5
+      source_file: !!python/tuple
+      - choose
+      - []
+      source_time: !!python/tuple
+      - uniform
+      - 0
+      - 1000
+      time_stretch: !!python/tuple
+      - const
+      - 1
+    foreground_path: /home/data//remixpacks600/scaper/train_16k_3
+    num_mixtures: 5000
+    num_sources: 4
+    scene_duration: 4
+    target_path: ${DATA_DIRECTORY}/remixpacks600/generated/incoherent/val
+num_workers: 25
+ref_db: -40
+sample_rate: 16000
+seed: 0

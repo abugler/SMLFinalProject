@@ -1,0 +1,35 @@
+num_jobs: 2 # controls whether to run this sequentially or in parallel
+
+jobs:
+# Download musdb test set
+- script: run
+  config: -y data_prep/musdb/download.yml
+  run_in: host
+  blocking: true
+
+# Reorganize the dataset
+- script: reorganize
+  config: -y data_prep/remix_packs/reorganize.yml
+  run_in: host
+  blocking: true
+
+# Downsample each audio file from 44100 to 16000.
+- script: resample
+  config: -y data_prep/remix_packs/resample.yml
+  run_in: host
+  blocking: true
+
+- script: song_diversity
+  config: -y data_prep/remix_packs/song_diversity.yml
+  run_in: host
+  blocking: true
+
+# Mix a coherent dataset with Scaper.
+#- script: mix_with_scaper
+#  config: -y data_prep/remix_packs/coherent.yml
+#  run_in: host
+
+# Mix an incoherent dataset with Scaper.
+#- script: mix_with_scaper
+#  config: -y data_prep/remix_packs/incoherent.yml
+#  run_in: host

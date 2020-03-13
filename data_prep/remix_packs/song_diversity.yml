@@ -1,0 +1,8 @@
+jobs:
+  - num_songs: 3, 20, 100, 200, 9999999
+    source_path: ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k
+    target_paths: 
+    - ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_3, ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_20, ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_100, ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_200, ${DATA_DIRECTORY}/remixpacks600/scaper/train_16k_all
+    instrument_types: 
+    - drums, vocals, bass, other
+  

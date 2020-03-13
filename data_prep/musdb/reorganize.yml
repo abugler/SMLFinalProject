@@ -1,0 +1,11 @@
+---
+jobs:
+- input_path: ${DATA_DIRECTORY}/musdb18_sample/train
+  output_path: ${DATA_DIRECTORY}/musdb18_sample/scaper/train
+  org_func: split_folder_by_class
+  make_copy: false
+  
+- input_path: ${DATA_DIRECTORY}/musdb18_sample/validation
+  output_path: ${DATA_DIRECTORY}/musdb18_sample/scaper/validation
+  org_func: split_folder_by_class
+  make_copy: false
