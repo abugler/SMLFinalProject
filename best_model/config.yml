@@ -1,0 +1,145 @@
+algorithm_config:
+  args:
+    clustering_options:
+      posterior_alpha: 5.0
+    enhancement_amount: 0.0
+    mask_type: soft
+    model_path: best_model/checkpoints/best.model.pth
+    num_sources: 2
+    percentile: 95
+  class: DeepClustering
+dataset_config:
+  cache: musdb_cache
+  data_keys_for_training:
+  - log_spectrogram
+  - assignments
+  - weights
+  excerpt_selection_strategy: random
+  format: rnn
+  fraction_of_dataset: 1.0
+  group_sources:
+  - - drums
+    - bass
+    - other
+  hop_length: 128
+  ignore_sources: []
+  length: 400
+  n_fft: 512
+  num_channels: 1
+  output_type: psa
+  overwrite_cache: false
+  sample_rate: 16000
+  source_labels: []
+  use_librosa_stft: false
+  weight_threshold: -80
+  weight_type:
+  - magnitude
+datasets:
+  test:
+    class: Scaper
+    folder: test_set/
+  train:
+    class: Scaper
+    folder: /home/data//musdb18_sample/generated/incoherent/train/
+  val:
+    class: Scaper
+    folder: /home/data//musdb18_sample/generated/incoherent/val/
+info:
+  blocking: false
+  experiment_key: 74655d7f02554caca97943184a12e582
+  notes: ', n_fft: 512, hop_length: 128, num_frequencies: 257, num_features: 257,
+    num_epochs: 100, model_config.modules.recurrent_stack.args.num_layers: 4, cache:
+    /home/abugler/.cache//musdb_128, populate_cache: True, num_cache_workers: 60,
+    bidirectional: True, model_config.modules.recurrent_stack.args.hidden_size: 300,
+    num_mels: -1, model_config.modules.embedding.args.hidden_size: 600'
+  num_gpus: 1
+  output_folder: output
+  project_name: cookiecutter/music
+  seed: 0
+  spreadsheet_name: Andreas'_dpcl_experiments
+  worksheet_name: musdb
+model_config:
+  class: SeparationModel
+  connections:
+  - !!python/tuple
+    - mel_projection
+    - - log_spectrogram
+  - !!python/tuple
+    - normalization
+    - - mel_projection
+  - !!python/tuple
+    - recurrent_stack
+    - - normalization
+  - !!python/tuple
+    - embedding
+    - - recurrent_stack
+  modules:
+    embedding:
+      args:
+        activation:
+        - tanh
+        embedding_size: 20
+        hidden_size: 600
+        num_channels: 1
+        num_features: 257
+      class: Embedding
+    log_spectrogram:
+      input_shape:
+      - -1
+      - -1
+      - 257
+    mel_projection:
+      args:
+        clamp: false
+        direction: forward
+        num_frequencies: 257
+        num_mels: -1
+        sample_rate: 16000
+        trainable: false
+      class: MelProjection
+    normalization:
+      args:
+        use_instance_norm: true
+      class: InstanceNorm
+    recurrent_stack:
+      args:
+        bidirectional: true
+        dropout: 0.3
+        hidden_size: 300
+        num_features: 257
+        num_layers: 4
+        rnn_type: lstm
+      class: RecurrentStack
+  output:
+  - embedding
+test_config:
+  num_workers: 10
+  testers:
+    ScaleInvariantSDR:
+      compute_permutation: true
+      scaling: true
+  use_blocking_executor: true
+train_config:
+  batch_size: 40
+  class: Trainer
+  curriculum_learning:
+  - args:
+    - 400
+    command: set_current_length
+    num_epoch: 0
+  data_parallel: true
+  device: cuda
+  initial_length: 400
+  learning_rate: 0.0002
+  learning_rate_decay: 0.5
+  loss_function:
+  - !!python/tuple
+    - dpcl
+    - embedding
+    - 1.0
+  num_epochs: 100
+  num_workers: 20
+  optimizer: adam
+  patience: 5
+  sample_strategy: sequential
+  weight_decay: 0.0
