@@ -54,6 +54,8 @@ components is as simple as adding new PyTorch code, though writing python is not
 
 ## Requirements
 
+- Install `git-lfs` BEFORE cloning this repo! You may find instructions here: [https://git-lfs.github.com]
+
 - Install `cookiecutter` command line: `pip install cookiecutter` (generates boilerplate 
 code)
 
@@ -65,9 +67,9 @@ code)
 
 ## Usage
 
-We have provided a completely configured `nussl` project to use the model we have trained. After cloning the project, run the following commands to set up the project. It is assumed this will be done a Linux System.
+We have provided a completely configured `nussl` project to use the model we have trained. After cloning the project, run the following commands to set up the project. It is assumed this will be done a Linux System, specifically, Ubuntu 18.04 LTS.
 
-Install SoX if you haven't already:
+Install SoX and if you haven't already:
 ```
 sudo apt-get install sox
 ```
@@ -76,12 +78,15 @@ Run the following commands to setup the environment.
 source setup/environment/sml_config.sh
 conda create -n nussl python=3.7
 conda activate nussl
+conda install -c conda-forge ffmpeg
 conda install pytorch==1.4.0 -c pytorch
 make poetry
 make install
 ```
+By following these instructions, all dependencies should be taken care of.
 
-## Class Project API
+
+## Class Project API (Forward Pass)
 
 For this project, we will showcase our model separating snippets of songs from the musdb dataset. More information about this dataset can be found here: [https://sigsep.github.io/datasets/musdb.html]
 
@@ -96,6 +101,16 @@ After the script finishes, you will find the output in `output/viz/test`. The fo
  - `mixture.wav`, which is an audio file containing both of the sources. 
  - `source0.wav` and `source1.wav`, which are the audio files containing the separated source
  - `viz.png` contains graphical visualization for clustering, as well as the waveforms of the sources.
+
+## Training the model
+
+To train the model, enter the following commands:
+ ```
+ make pipeline yml=data_prep/musdb/pipeline.yml
+ make experiment yml=experiments/dpcl/musdb_dpcl.yml num_gpus=1 num_jobs=1
+ make pipeline yml=experiments/dpcl/out/musdb_dpcl/pipeline.yml
+ ```
+Training MUST be done on a GPU. For us, it took 6 hours. 
 
 ## Documentation
 
