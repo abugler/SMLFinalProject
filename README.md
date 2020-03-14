@@ -73,10 +73,10 @@ sudo apt-get install sox
 ```
 Run the following commands to setup the environment.
 ```
-source setup/environment/ml_config.sh
+source setup/environment/sml_config.sh
 conda create -n nussl python=3.7
 conda activate nussl
-conda install pytorch==1.4.0
+conda install pytorch==1.4.0 -c pytorch
 make poetry
 make install
 ```
