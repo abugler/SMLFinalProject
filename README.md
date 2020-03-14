@@ -59,26 +59,43 @@ code)
 
 - Install [Anaconda or Miniconda](https://www.anaconda.com/distribution/)
 
-- Install [Docker](https://www.docker.com/) and [NVIDIA Docker](https://github.com/NVIDIA/nvidia-docker)
-
 - Install Poetry: https://poetry.eustace.io/docs/#installation (dependency management)
 
 - In order to efficiently install all packages with dependencies, `make poetry` in a new Conda environment. This will install all of the necessary components in the right order.
 
 ## Usage
 
-To start a new project, input into terminal:
+We have provided a completely configured `nussl` project to use the model we have trained. After cloning the project, run the following commands to set up the project. It is assumed this will be done a Linux System.
 
-`cookiecutter gh:pseeth/cookiecutter-nussl` 
-
-This will then run you through a setup process in which you specify your data, cache, and artifacts folder.
-
-After creating these folders, you can begin running experiments and training models, all of which is specified in the documentation below.
-
+Install SoX if you haven't already:
+```
+sudo apt-get install sox
+```
+Run the following commands to setup the environment.
+```
+source setup/environment/ml_config.sh
+conda create -n nussl python=3.7
+conda activate nussl
+conda install pytorch==1.4.0
+make poetry
+make install
+```
 
 ## Class Project API
 
-ALTERNATIVE: ANDREAS WE WRITE ABOUT HOW VISUALIZE.py takes in an audio file and separates it given the specified trained deep clustering model (does this part still need the nussl library? OR is a simple visualize.py okay?)
+For this project, we will showcase our model separating snippets of songs from the musdb dataset. More information about this dataset can be found here: [https://sigsep.github.io/datasets/musdb.html]
+
+In our repository, we have also provided a sample of musdb, containing 3000 4 second snippets of each song, each contianing only 2 sources. 
+
+To randomly separate one of the snippets, run:
+```
+python -m scripts.visualize -p best_model/config.yml
+```
+After the script finishes, you will find the output in `output/viz/test`. The folder will be named a string of 8 numbers. The newest one is most likely the one generated from the visualize script eariler. In this folder, you will find:
+
+ - `mixture.wav`, which is an audio file containing both of the sources. 
+ - `source0.wav` and `source1.wav`, which are the audio files containing the separated source
+ - `viz.png` contains graphical visualization for clustering, as well as the waveforms of the sources.
 
 ## Documentation
 
